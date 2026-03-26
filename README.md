@@ -16,7 +16,7 @@ This project allows teachers to manage students, mark attendance with date, filt
 - 📊 Generate Attendance Report
 - 📄 Download PDF Report (Filtered by Department & Date)
 - 📱 Responsive UI (works on mobile & desktop)
-- 📂 Excel used as Database (no SQL required)
+- 📂 Excel used as Database
 
 ## 🛠️ Technologies Used
 - **Backend:** Python, Flask  
