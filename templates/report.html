@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance Report</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6fb;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 30px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        select, input {
+            padding: 8px;
+            margin: 5px;
+        }
+
+        button {
+            padding: 8px 16px;
+            background: #0b2e59;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        table {
+            margin: auto;
+            margin-top: 30px;
+            width: 85%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        th {
+            background: #0b2e59;
+            color: white;
+        }
+
+        .no-data {
+            color: red;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Attendance Report</h1>
+
+    <!-- FILTER FORM -->
+    <form method="GET">
+
+        <label>Department:</label>
+        <select name="department">
+            <option value="All" {% if selected_dept == "All" %}selected{% endif %}>All</option>
+            <option value="CSE" {% if selected_dept == "CSE" %}selected{% endif %}>CSE</option>
+            <option value="EE" {% if selected_dept == "EE" %}selected{% endif %}>EE</option>
+            <option value="ME" {% if selected_dept == "ME" %}selected{% endif %}>ME</option>
+            <option value="IT" {% if selected_dept == "IT" %}selected{% endif %}>IT</option>
+            <option value="AI-ML" {% if selected_dept == "AI-ML" %}selected{% endif %}>AI-ML</option>
+            <option value="AI-DS" {% if selected_dept == "AI-DS" %}selected{% endif %}>AI-DS</option>
+            <option value="BCA" {% if selected_dept == "BCA" %}selected{% endif %}>BCA</option>
+            <option value="MCA" {% if selected_dept == "MCA" %}selected{% endif %}>MCA</option>
+            <option value="MBA" {% if selected_dept == "MBA" %}selected{% endif %}>MBA</option>
+            <option value="BBA" {% if selected_dept == "BBA" %}selected{% endif %}>BBA</option>
+        </select>
+
+        <label>Date:</label>
+        <input 
+            type="date" 
+            name="date" 
+            value="{{ selected_date }}"
+        >
+
+        <button type="submit">Filter</button>
+
+    </form>
+
+    <!-- TABLE -->
+    <table>
+
+        <tr>
+            <th>Roll</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Total</th>
+            <th>Present</th>
+            <th>Absent</th>
+            <th>Percentage</th>
+        </tr>
+
+        {% for row in data %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+            <td>{{ row[5] }}</td>
+            <td>{{ row[6] }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    <!-- NO DATA -->
+    {% if data|length == 0 %}
+        <p class="no-data">No records found</p>
+    {% endif %}
+
+    <!-- DOWNLOAD -->
+    <br>
+    <a href="/download?department={{ selected_dept }}&date={{ selected_date }}">
+        <button>Download PDF</button>
+    </a>
+
+    <br><br>
+
+    <!-- BACK -->
+    <a href="/">
+        <button>Back to Home</button>
+    </a>
+
+</body>
+</html>

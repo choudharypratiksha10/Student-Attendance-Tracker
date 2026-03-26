@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Student</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6fb;
+            text-align: center;
+        }
+
+        .container {
+            margin-top: 80px;
+        }
+
+        .card {
+            display: inline-block;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        input, select {
+            width: 250px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #0b2e59;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #174a8c;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="card">
+            <h2>Edit Student</h2>
+
+            <form action="/update" method="POST">
+
+                <!-- Hidden Roll -->
+                <input type="hidden" name="roll" value="{{ student[0] }}">
+
+                <!-- Name -->
+                <input 
+                    type="text" 
+                    name="name" 
+                    value="{{ student[1] }}" 
+                    required
+                >
+
+                <!-- Department -->
+                <select name="department" required>
+
+                    <option value="CSE" {% if student[2]=='CSE' %}selected{% endif %}>CSE</option>
+                    <option value="EE" {% if student[2]=='EE' %}selected{% endif %}>EE</option>
+                    <option value="ME" {% if student[2]=='ME' %}selected{% endif %}>ME</option>
+                    <option value="IT" {% if student[2]=='IT' %}selected{% endif %}>IT</option>
+                    <option value="AI-ML" {% if student[2]=='AI-ML' %}selected{% endif %}>AI-ML</option>
+                    <option value="AI-DS" {% if student[2]=='AI-DS' %}selected{% endif %}>AI-DS</option>
+                    <option value="BCA" {% if student[2]=='BCA' %}selected{% endif %}>BCA</option>
+                    <option value="MCA" {% if student[2]=='MCA' %}selected{% endif %}>MCA</option>
+                    <option value="MBA" {% if student[2]=='MBA' %}selected{% endif %}>MBA</option>
+                    <option value="BBA" {% if student[2]=='BBA' %}selected{% endif %}>BBA</option>
+
+                </select>
+
+                <!-- Update Button -->
+                <button type="submit">Update Student</button>
+
+            </form>
+
+            <br>
+
+            <!-- Back Button -->
+            <a href="/">
+                <button>Back</button>
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
