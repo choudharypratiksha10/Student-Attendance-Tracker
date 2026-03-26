@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>College Attendance Portal</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Segoe UI, Arial;
+            background: #f4f6fb;
+        }
+
+        nav {
+            background: #0b2e59;
+            padding: 15px 40px;
+            color: white;
+        }
+
+        .hero {
+            height: 420px;
+            background-image: url("https://lh3.googleusercontent.com/gps-cs-s/AHVAweoeVzPSnGgduwxuARO5QYRgUfQQXxzYDiuhr5VFBueTqbC77TKuGrPO1sELJST-IwqDAHqSHqpoM8mM98bR2-xylzyQ7dSdrh3s7pE25ZlWga4dqvmN8X96rtBNAGdhfkrv-rl8=w1200");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+        }
+
+        .hero h1 {
+            position: relative;
+            color: white;
+            font-size: 42px;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 75%;
+            margin: auto;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 35px;
+            border-radius: 12px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.1);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input, select {
+            width: 260px;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: #0b2e59;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #174a8c;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background: #0b2e59;
+            color: white;
+        }
+
+        .actions button {
+            margin: 2px;
+            padding: 5px 10px;
+        }
+
+        .delete-btn {
+            background: red;
+        }
+
+        .no-data {
+            color: red;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+
+            input, select, button {
+                width: 90%;
+            }
+
+            table {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <h2>College Attendance System</h2>
+</nav>
+
+<div class="hero">
+    <h1>Welcome to Student Attendance Portal</h1>
+</div>
+
+<div class="container">
+
+    <!-- ADD STUDENT -->
+    <div class="card">
+        <h2>Add Student</h2>
+
+        <form action="/add_student" method="POST">
+            <input type="text" name="name" placeholder="Student Name" required>
+            <input type="text" name="roll" placeholder="Roll Number" required>
+
+            <select name="department" required>
+                <option value="">Select Department</option>
+                <option>CSE</option>
+                <option>EE</option>
+                <option>ME</option>
+                <option>IT</option>
+                <option>AI-ML</option>
+                <option>AI-DS</option>
+                <option>BCA</option>
+                <option>MCA</option>
+                <option>MBA</option>
+                <option>BBA</option>
+            </select>
+
+            <button type="submit">Add Student</button>
+        </form>
+    </div>
+
+    <!-- SEARCH + FILTER -->
+    <div class="card">
+        <h2>Search & Filter</h2>
+
+        <form method="GET">
+            <input 
+                type="text" 
+                name="search" 
+                placeholder="Search by name or roll"
+                value="{{ search }}"
+            >
+
+            <select name="department">
+                <option value="All" {% if selected_dept == "All" %}selected{% endif %}>All Departments</option>
+                <option value="CSE" {% if selected_dept == "CSE" %}selected{% endif %}>CSE</option>
+                <option value="EE" {% if selected_dept == "EE" %}selected{% endif %}>EE</option>
+                <option value="ME" {% if selected_dept == "ME" %}selected{% endif %}>ME</option>
+                <option value="IT" {% if selected_dept == "IT" %}selected{% endif %}>IT</option>
+                <option value="AI-ML" {% if selected_dept == "AI-ML" %}selected{% endif %}>AI-ML</option>
+                <option value="AI-DS" {% if selected_dept == "AI-DS" %}selected{% endif %}>AI-DS</option>
+                <option value="BCA" {% if selected_dept == "BCA" %}selected{% endif %}>BCA</option>
+                <option value="MCA" {% if selected_dept == "MCA" %}selected{% endif %}>MCA</option>
+                <option value="MBA" {% if selected_dept == "MBA" %}selected{% endif %}>MBA</option>
+                <option value="BBA" {% if selected_dept == "BBA" %}selected{% endif %}>BBA</option>
+            </select>
+
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <!-- STUDENT LIST -->
+    <div class="card">
+        <h2>Student List</h2>
+
+        <table>
+            <tr>
+                <th>Roll</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Actions</th>
+            </tr>
+
+            {% for s in students %}
+            <tr>
+                <td>{{ s[0] }}</td>
+                <td>{{ s[1] }}</td>
+                <td>{{ s[2] }}</td>
+                <td class="actions">
+
+                    <a href="/edit/{{ s[0] }}">
+                        <button>Edit</button>
+                    </a>
+
+                    <a href="/delete/{{ s[0] }}"
+                       onclick="return confirm('Are you sure you want to delete this student?');">
+                        <button class="delete-btn">Delete</button>
+                    </a>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <!-- NO DATA MESSAGE -->
+        {% if students|length == 0 %}
+            <p class="no-data">No students found</p>
+        {% endif %}
+    </div>
+
+    <!-- MARK ATTENDANCE -->
+    <div class="card">
+        <h2>Mark Attendance</h2>
+
+        <form action="/mark_attendance" method="POST">
+            <input type="text" name="roll" placeholder="Roll Number" required>
+
+            <input type="date" name="date" required>
+            
+            <select name="status">
+                <option value="Present">Present</option>
+                <option value="Absent">Absent</option>
+            </select>
+
+            <button type="submit">Mark Attendance</button>
+        </form>
+    </div>
+
+    <a href="/report">
+        <button>View Attendance Report</button>
+    </a>
+
+</div>
+
+</body>
+</html>
